@@ -2,7 +2,7 @@ import json
 from flask import Flask
 
 from mmg_ai_test.averager import process_csv
-from mmg_ai_test.models import Model
+from mmg_ai_test.regressor import Model
 
 app = Flask(__name__)
 model = Model()
@@ -16,7 +16,7 @@ def average():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    r = model.predict()
+    r = model.predict({})
     return json.dumps(r)
 
 

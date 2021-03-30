@@ -1,34 +1,34 @@
-import requests
 from typing import TypedDict
+
+import requests
 
 URI = "s3://mmg-hiring-tests/python/mmg_data.csv"
 URL = "https://mmg-hiring-tests.s3-eu-west-1.amazonaws.com/python/mmg_data.csv"
 
 
-class Result(TypedDict):
+class AveragerDict(TypedDict):
     lines: int
     average: float
 
 
-def process_csv() -> Result:
+def process_csv() -> AveragerDict:
     """
     Load the csv and calculate the number of lines and the average of the field 'tip_amount'
     """
 
-    res = _process_stream(URL)
-    # TODO: Try other methods
-    # res = _process_dask(URI)
+    res = _request_stream(URL)
+    # TODO: Try other methods: boto3, dask, async approach?
     return res
 
 
-def _process_stream(url):
-    col = None
+def _request_stream(url: str):
+    """"""
     lines, total = 0, 0
     with requests.get(url, stream=True) as r:
-        for line in r.iter_lines(decode_unicode=True):
-            if col is None:
-                col = line.split(",").index("tip_amount")
-                continue
+        iterator = r.iter_lines(decode_unicode=True)
+        header = next(iterator)
+        col = header.split(",").index("tip_amount")
+        for line in iterator:
             if line:
                 lines += 1
                 total += float(line.split(",")[col])
