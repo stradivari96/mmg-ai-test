@@ -9,9 +9,7 @@ class AveragerDict(TypedDict):
 
 
 def process_csv(url, max_lines=None) -> AveragerDict:
-    """
-    Load the csv and calculate the number of lines and the average of the field 'tip_amount'
-    """
+    """Load the csv and return the number of lines and the average of the field 'tip_amount'."""
 
     res = _request_stream(url, max_lines)
     # TODO: Try other methods: boto3, dask, async approach?
@@ -19,7 +17,7 @@ def process_csv(url, max_lines=None) -> AveragerDict:
 
 
 def _request_stream(url: str, max_lines):
-    """"""
+    """Request the csv via streaming and process it line by line."""
     lines, total = 0, 0
     with requests.get(url, stream=True) as r:
         iterator = r.iter_lines(decode_unicode=True)

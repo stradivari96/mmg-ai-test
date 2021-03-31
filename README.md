@@ -1,4 +1,5 @@
 # Python AI developers test
+![test](https://github.com/stradivari96/mmg-ai-test/actions/workflows/test.yml/badge.svg)
 [![codecov](https://codecov.io/gh/stradivari96/mmg-ai-test/branch/main/graph/badge.svg?token=NKCRH5K75Y)](https://codecov.io/gh/stradivari96/mmg-ai-test)
 
 ## Running
@@ -8,6 +9,7 @@ docker-compose up -d
 ```
 If you don't have docker, you can do:
 ```
+# Note: won't insert into MongoDB
 FLASK_APP=mmg_ai_test/app.py flask run
 ```
 You should be able to test it using curl:

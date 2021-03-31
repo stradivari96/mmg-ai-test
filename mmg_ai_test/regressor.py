@@ -7,15 +7,17 @@ from mmg_ai_test.constants import MODEL_FILE, FEATURES
 
 
 class Model:
+    """Wrapper for a machine learning model that predicts 'total_amount'."""
+
     def __init__(self):
         self._model = LinearRegression()
 
-    def predict(self, x):
+    def predict(self, x: dict) -> float:
         x = {f: x.get(f, 0) for f in FEATURES}
         df = pd.DataFrame(x, index=[0])
         return self._model.predict(df)[0]
 
-    def train(self, df):
+    def train(self, df: pd.DataFrame):
         x = df[FEATURES]
         y = df["total_amount"]
         self._model.fit(x, y)
@@ -24,7 +26,7 @@ class Model:
         joblib.dump(self, filename)
 
     @classmethod
-    def load(cls, filename):
+    def load(cls, filename) -> "Model":
         try:
             model = joblib.load(filename)
         except FileNotFoundError:
