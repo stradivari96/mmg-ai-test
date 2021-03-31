@@ -8,17 +8,17 @@ class AveragerDict(TypedDict):
     average: float
 
 
-def process_csv(url) -> AveragerDict:
+def process_csv(url, max_lines=None) -> AveragerDict:
     """
     Load the csv and calculate the number of lines and the average of the field 'tip_amount'
     """
 
-    res = _request_stream(url)
+    res = _request_stream(url, max_lines)
     # TODO: Try other methods: boto3, dask, async approach?
     return res
 
 
-def _request_stream(url: str):
+def _request_stream(url: str, max_lines):
     """"""
     lines, total = 0, 0
     with requests.get(url, stream=True) as r:
@@ -26,7 +26,10 @@ def _request_stream(url: str):
         header = next(iterator)
         col = header.split(",").index("tip_amount")
         for line in iterator:
-            if line:
-                lines += 1
-                total += float(line.split(",")[col])
+            if not line:
+                continue
+            lines += 1
+            total += float(line.split(",")[col])
+            if max_lines and lines >= max_lines:
+                break
     return {"lines": lines, "average": total / lines}
