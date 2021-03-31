@@ -3,16 +3,15 @@ from flask import Flask, request
 
 from mmg_ai_test.averager import process_csv
 from mmg_ai_test.regressor import Model
+from mmg_ai_test.constants import CSV_URL
 
 app = Flask(__name__)
 model = Model.load("./data/model.joblib")
 
-URL = "https://mmg-hiring-tests.s3-eu-west-1.amazonaws.com/python/mmg_data.csv"
-
 
 @app.route("/")
 def average():
-    r = process_csv(URL)
+    r = process_csv(CSV_URL)
     return json.dumps(r)
 
 
