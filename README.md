@@ -9,6 +9,10 @@ docker-compose up -d
 ```
 If you don't have docker, you can do:
 ```
+pip install -r requirements.txt
+```
+and start the application via:
+```
 # Note: won't insert into MongoDB
 FLASK_APP=mmg_ai_test/app.py flask run
 ```
